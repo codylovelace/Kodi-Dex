@@ -1,0 +1,254 @@
+# -*- coding: utf-8 -*-
+"""The rows on the skin's Home: which row sits in which slot of a tab, as
+Home window properties (dhs.<tab>.<n>.id/title/sub/shape/path).
+
+Light on purpose (no router): at Kodi's start the Home shows the rows saved
+last time from here at once, while the service works them out again.
+"""
+import os
+
+from . import common as C
+
+
+def load_specs(tab):
+    data = C.read_json(C.spec_file(tab), {}) or {}
+    return list(data.get('rows') or [])
+
+
+def find_spec(tab, row_id):
+    for spec in load_specs(tab):
+        if spec.get('id') == row_id:
+            return spec
+    return None
+
+
+def row_path(tab, row_id, version=0):
+    return C.url('skin_row', m=tab, id=row_id, v=str(version or 0))
+
+
+def _version(tab, row_id):
+    try:
+        return int(C.prop('dhs.v.%s.%s' % (tab, row_id)) or 0)
+    except Exception:
+        return 0
+
+
+def bump(tab, row_id, spec=None):
+    """A row's content changed: its path changes, so Kodi reads it again."""
+    version = _version(tab, row_id) + 1
+    C.set_prop('dhs.v.%s.%s' % (tab, row_id), version)
+    for n in range(1, C.ROWS + 1):
+        if C.prop('dhs.%s.%d.id' % (tab, n)) == row_id:
+            # v5.10.140: no selection capture/restore here. It read the row's
+            # list through xbmcgui controls from the service's threads (a
+            # skin's list has no items on that side, so it never restored
+            # anything) and ran right where Kodi 22 RC1 crashed.
+            C.set_prop('dhs.%s.%d.path' % (tab, n), row_path(tab, row_id, version))
+            if spec is not None:
+                C.set_prop('dhs.%s.%d.shape' % (tab, n), spec.get('shape') or 'poster')
+            break
+
+
+SPOT = 'spot'           # the row id of a tab's spotlight picks (skin.dexhub 2)
+SPOT_ITEMS = 8          # as many picks as the add-on's billboard
+
+
+def _spot_worthy(item):
+    props = item.get('props') or {}
+    return (props.get('kind') == 'work' and props.get('dhs.click') == 'info'
+            and bool((item.get('art') or {}).get('fanart')))
+
+
+def update_spot(tab, specs=None):
+    """The tab's spotlight: the first titles with artwork of its first
+    catalog row (as the add-on's billboard picks them), saved as a row of
+    its own (rows/<tab>_spot.json) and published as dhs.<tab>.spot.*.
+    True when the picks changed."""
+    if specs is None:
+        specs = [spec for _slot, spec in published(tab)]
+    source, data, items = None, None, []
+    for spec in specs:
+        if spec.get('own') or spec.get('progress') or (spec.get('kind') or 'catalog') != 'catalog':
+            continue
+        data = C.read_json(C.row_file(tab, spec['id'])) or {}
+        items = [item for item in data.get('items') or [] if _spot_worthy(item)][:SPOT_ITEMS]
+        if len(items) >= 3:
+            source = spec
+            break
+        items = []
+    prefix = 'dhs.%s.spot.' % tab
+    if source is None:
+        for field in ('id', 'title', 'key', 'path', 'empty'):
+            C.set_prop(prefix + field, '')
+        return False
+    digest = C.content_hash(items, {'src': source['id']})
+    old = C.read_json(C.row_file(tab, SPOT)) or {}
+    changed = old.get('h') != digest
+    if changed:
+        C.write_json(C.row_file(tab, SPOT), {
+            't': C.now(), 'key': SPOT, 'title': source.get('title') or '', 'shape': 'landscape',
+            'kind': 'spot', 'items': items, 'more': None, 'h': digest, 'lang': data.get('lang'),
+            'enriched': True, 'ttl': 10.0 ** 9, 'f': C.FORMAT, 'src': source['id']})
+        C.set_prop(prefix + 'empty', '')
+        served = C.prop('dhs.sv.%s.%s' % (tab, SPOT))
+        if served and served != digest:
+            # Kodi holds the old picks: a new path makes it read the new ones
+            C.set_prop('dhs.v.%s.%s' % (tab, SPOT), _version(tab, SPOT) + 1)
+    C.set_prop(prefix + 'id', SPOT)
+    C.set_prop(prefix + 'title', source.get('title') or '')
+    C.set_prop(prefix + 'key', '%s:%s' % (tab, SPOT))
+    C.set_prop(prefix + 'path', row_path(tab, SPOT, _version(tab, SPOT)))
+    return changed
+
+
+# v5.10.118: what publishing needs of a row's cache (is it there, has it
+# titles, its shape), kept by the file's stamp. A publish read every row's
+# whole cache again (60 rows: 4 to 7 s in a box's kodi.log, each refresh).
+_BRIEF = {}
+
+
+def _row_brief(path):
+    """None when the row has no cache, else {'items': bool, 'shape': str,
+    'src': the fingerprint of the cards a collection row was built from,
+    'f': its format}."""
+    try:
+        st = os.stat(path)
+    except OSError:
+        _BRIEF.pop(path, None)
+        return None
+    stamp = (st.st_mtime_ns, st.st_size)
+    hit = _BRIEF.get(path)
+    if hit is not None and hit[0] == stamp:
+        return hit[1]
+    data = C.read_json(path)
+    brief = None if data is None else {'items': bool(data.get('items')), 'shape': data.get('shape') or '',
+                                       'src': data.get('src') or '', 'f': data.get('f'), 'filter_summary': data.get('filter_summary') or ''}
+    if len(_BRIEF) > 400:
+        _BRIEF.clear()
+    _BRIEF[path] = (stamp, brief)
+    return brief
+
+
+def _publish_tab(tab, specs):
+    shown = 0
+    shapes = []
+    shown_specs = []
+    for spec in specs:
+        if shown >= C.ROWS:
+            break
+        data = _row_brief(C.row_file(tab, spec['id']))
+        if data is not None and not data.get('items'):
+            # a row that came back empty last time stays off the Home until
+            # it has titles again (the service reads it again later; Continue
+            # Watching after the next play)
+            continue
+        if data is not None and data.get('shape'):
+            spec['shape'] = data['shape']
+        shown += 1
+        prefix = 'dhs.%s.%d.' % (tab, shown)
+        key = '%s:%s' % (tab, spec['id'])
+        mark = C.prop(prefix + 'empty')
+        if mark and (mark != key or data is not None):
+            # v5.10.120: another row in the slot, or titles now
+            C.set_prop(prefix + 'empty', '')
+        eligible = (spec.get('kind') == 'catalog' and not spec.get('own')
+                    and not spec.get('progress') and bool((spec.get('params') or {}).get('action')))
+        C.set_prop(prefix + 'filterable', '1' if eligible else '')
+        C.set_prop(prefix + 'id', spec['id'])
+        C.set_prop(prefix + 'title', spec['title'])
+        sub = spec.get('sub') or ''
+        sub = '' if sub.strip().lower() == (spec.get('title') or '').strip().lower() else sub
+        C.set_prop(prefix + 'sub', '  ·  '.join(p for p in (sub, (data or {}).get('filter_summary')) if p))
+        C.set_prop(prefix + 'shape', spec['shape'])
+        C.set_prop(prefix + 'key', key)
+        C.set_prop(prefix + 'path', row_path(tab, spec['id'], _version(tab, spec['id'])))
+        shapes.append(spec['shape'] or 'poster')
+        shown_specs.append(spec)
+    for n in range(shown + 1, C.ROWS + 1):
+        prefix = 'dhs.%s.%d.' % (tab, n)
+        if not C.prop(prefix + 'path') and not C.prop(prefix + 'id'):
+            break
+        for field in ('id', 'title', 'sub', 'shape', 'key', 'path', 'empty', 'filterable', 'loading'):
+            C.set_prop(prefix + field, '')
+    C.set_prop('dhs.%s.count' % tab, shown)
+    # the shapes of the hub's rows (skin.dexhub 2 builds a row's layout from
+    # its dhs.<tab>.<n>.shape when the hub opens; Kodi rebuilds the hub the
+    # next time it opens when one changed)
+    C.set_prop('dhs.%s.shapes' % tab, '|'.join(shapes))
+    try:
+        update_spot(tab, shown_specs)
+    except Exception as exc:
+        C.log('spotlight of %s: %s' % (tab, exc))
+    return shown
+
+
+def is_published(tab, row_id):
+    for n in range(1, C.ROWS + 1):
+        current = C.prop('dhs.%s.%d.id' % (tab, n))
+        if not current:
+            return False
+        if current == row_id:
+            return True
+    return False
+
+
+def mark_empty(tab, row_id, empty):
+    """v5.10.120: a row served with no titles. skin.dexhub loads a row once
+    the row above has its first title (one plugin call at a time); a row
+    that came back empty stopped the rows under it until the next publish
+    took it away. Its slot is marked (dhs.<tab>.<n>.empty = its key) and
+    the rows under it load at once; the mark goes with the next publish
+    (another row in the slot) or the row's first titles."""
+    if row_id == SPOT:
+        name, key = 'dhs.%s.spot.empty' % tab, '%s:%s' % (tab, SPOT)
+    else:
+        name = ''
+        for n in range(1, C.ROWS + 1):
+            current = C.prop('dhs.%s.%d.id' % (tab, n))
+            if not current:
+                return
+            if current == row_id:
+                name, key = 'dhs.%s.%d.empty' % (tab, n), '%s:%s' % (tab, row_id)
+                break
+        if not name:
+            return
+    value = key if empty else ''
+    if C.prop(name) != value:
+        C.set_prop(name, value)
+
+
+def mark_pending(tab, row_id, pending):
+    for n in range(1, C.ROWS + 1):
+        if C.prop('dhs.%s.%d.id' % (tab, n)) == row_id:
+            C.set_prop('dhs.%s.%d.loading' % (tab, n), '1' if pending else '')
+            break
+
+
+def published(tab):
+    """[(slot, spec)] of the rows on the tab now."""
+    specs = dict((s['id'], s) for s in load_specs(tab))
+    out = []
+    for n in range(1, C.ROWS + 1):
+        row_id = C.prop('dhs.%s.%d.id' % (tab, n))
+        if not row_id:
+            break
+        if row_id in specs:
+            out.append((n, specs[row_id]))
+    return out
+
+
+def publish_saved(tabs=C.TABS):
+    """The rows saved by the last publish, put on the Home at once (a few
+    milliseconds); False when there is nothing saved yet."""
+    from . import strings
+    strings.publish()
+    total, found = 0, False
+    for tab in tabs:
+        specs = load_specs(tab)
+        if specs:
+            found = True
+            total += _publish_tab(tab, specs)
+    if found:
+        C.set_prop(C.PROP_READY, '1')
+        C.log('rows shown from the last session: %d' % total)
+    return found

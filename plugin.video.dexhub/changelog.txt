@@ -1,0 +1,57 @@
+5.10.143
+- The "Colorful" badge style is called "Framed" (skin.dexhub 3.19.1 draws its own framed badges instead of the colorful flags).
+- Adding a source from a stremio:// link (the Install button on add-on pages) or a Stremio Web link (addon=...) works: the link becomes its https manifest URL before it is read or saved (dexhub/links.py), wherever a link is pasted: Add a source, the missing add-on prompt of collection imports, collection manifests, the AIOMetadata picker, Nuvio sync files, and the store itself. It failed with "unknown url type: stremio" (GitHub issue #1).
+- Trakt: no pause or stop scrobble below 1 percent (it was 0.5); Trakt answers 422 between 0.5 and 1 percent (GitHub issue #3).
+- Nuvio watch progress pulled from the account gets its percent from position and duration (Nuvio sends none): rows showed 0 percent and finished titles stayed in Continue Watching (GitHub issue #3). Titles for those rows come from continue_names since 5.10.103.
+
+5.10.142
+- Player badges on a grey see-through plate: skin.dexhub 3.19.0 asked for Dex Hub 5.10.141, so Kodi refused it when its zip went in before the add-on, and 3.18 stayed; 3.18 draws a plate under every pack image from 'fill' and 'border', and an empty colour is no tint (white) in Kodi. Image badges now send both fully transparent (00ffffff), so no plate shows on older skins either.
+- With a pack or the folder chosen and skin.dexhub older than 3.19, a notification says to install skin.dexhub 3.19 (once, 25 seconds after start, and on the badge page).
+- Pair with skin.dexhub 3.19.1 (installs in any order).
+
+5.10.141
+- Player badges like the official logos: the Elite pack (official Dolby Vision, Atmos, DTS logos), Gold and Minimalist white are presets; a pack's JSON and its images are downloaded once when it is chosen (progress dialog, 12 MB an image, 150 MB a pack) and kept in addon_data/badge_packs. Nothing is fetched at playback.
+- Each image is drawn by skin.dexhub 3.19 at one height with no plate, in a box as wide as its shape (quarter-height steps); for the Elite and Gold images with empty transparent rows (up to half their height) the box is cut to the drawing (badge_shapes.TRIMS, measured from the images, matched by name and size), so every logo stands at the row's height.
+- SVG images (Kodi cannot draw them; the whole Minimalist pack) become their names in a frame with the pack's colours; a text colour of 00 alpha is shown white.
+- New "From my folder" style: the skin's badges, any of them replaced by an image of the same name in addon_data/plugin.video.dexhub/badges (or a folder you pick, network folders too); the folder is filled with the skin's images and a README listing the names on first use. Folder options: where it is, another folder, back to default, put the skin's images back.
+- Custom and folder badges are published once per stream start or change (onAVStarted/onAVChange), from Kodi's labels; the HDR type comes from the release name when Kodi reports none.
+- A replaced folder image shows at once: its stamp is kept (badge_folder_seen.json) and Kodi's cached copy is dropped through JSON-RPC (Textures.RemoveTexture) when it changes.
+- Gaps: the empty width beside each drawing (its transparent columns, a kept aspect's slack) is sent per slot (x4 to x40) and taken back by the skin, so the logos stand evenly apart.
+- Badge settings are written only when they change (each write made the service read the whole settings file again).
+- Badge page data: dhs.preview.<elite|gold|white|folder|url>.N.*, dhs.osd.badge.key (the chosen item), dhs.osd.badge.N.w (width class).
+- Packs saved by 5.10.140 keep working (their images from the web, as then) until chosen again.
+- New Home setting "Dim unfocused rows": light (85 percent, default), none, strong (60 percent, the old look); dhs.pref.homeui_row_dim, display only.
+- Skin strings published up to 32090 (skin.dexhub 3.19 badge page, row dim, Close).
+- Pair with skin.dexhub 3.19.0.
+
+5.10.140
+- Home rows: skin.dexhub shows rows down to three below the cursor from their saved copies; only rows within the loading depth are refreshed from their source (rows 5 to 7 landed empty and filled 0.7 to 1.9 s later with 5.10.139 and skin 3.17.0).
+- Favorites: the Home's Favorites tab and the skin's favorites grid list again (they were empty since 5.10.137: the source menu wrote straight to Kodi and a captured route got nothing). Only Dex Hub's own list, with titles: it opens directly. Unlinked services without favourites are not listed; each source card shows its newest favourite's poster.
+- List settings (labelenum) store their values with entries: favorites layout, work logo position, title page, metadata language, library playback and the rest change from the skin's settings page, the add-on and code, in any Kodi language. Labels saved by older versions are turned back into values once at service start.
+- Add-on settings back to nine categories: IPTV sections under Sources, player appearance under Playback, favorites layout under Home; dependent options are disabled while their switch is off.
+- Simkl: a null reply (no change, empty list) is no longer an error that kept the sync snapshot from saving.
+- Settings changes made in Kodi's dialog reach the skin at once (the service read a stale Addon instance after invalidate).
+- Live TV: the sources tab works with the channels section hidden.
+- Like Nuvio: a series page opened from an episode card is not seeded with the episode's title, plot and still.
+- player_runtime art resolution matches plugin.py again (source art policy on the sources page).
+- Lighter: favourites cleanup writes only when old rows exist; no extra add-on process on audio/subtitle switches (the service's onAVChange updates custom badges).
+- Rows shown ahead without a saved copy get their first read (after the rows in the loading depth) instead of staying in the loading state.
+- The Trakt, Simkl and MDBList cards open their lists inside Home pages too (the full router had no favorite_source_menu and fell back to the root menu).
+- Smoother GUI everywhere, the Live guide most: xbmc.getCondVisibility takes Kodi's frame-move guard (the GUI thread sleeps 2 to 80 ms in each frame a call waits for, longer while calls keep coming). The service asked it 30 to 65 times a second (skin worker busy check, ratings focus 5 calls every 0.2 s, trailer look 13 calls every 0.25 s, skin enabled check, GIF target, grid check), also while the Live guide was open. Now window/dialog ids (xbmcgui.getCurrentWindowId/DialogId, graphics lock only, guistate.py), focused control and item counts from info labels, the skin's enabled state kept 5 s, the trailer's covering condition one call at most once a second: about 4 calls a second on the Home with trailers on and 0.3 a second in the guide (harness probe: 5.10.135 64/s and 30/s).
+- Channel and trailer previews: the busy-dialog watch during a start reads the dialog id every 50 ms instead of a condition every 30 ms.
+- Player network logo: an installed pack logo only, the white pack first (studio_art.resolve_player), drawn without a plate by skin.dexhub 3.18; TMDb's dark remote logos are no longer sent to the player.
+- Player options: the "extra OSD icons" switch is gone; skin.dexhub 3.18 shows the badges unless their style is Off.
+- Collections: the service no longer captures and restores the focused item inside skin windows (skinui/selection.py, 5.10.139) and keeps one Home window object instead of building one per call; a crash on opening a collection pointed at these calls from service threads.
+- Skin strings published up to 32059 (skin.dexhub 3.18 settings help).
+- Pair with skin.dexhub 3.18.0.
+
+5.10.139
+- Preserve the selected work when cached rows reorder; unchanged refreshes keep their render version.
+- Keep the last good tiles during row discovery and transient source errors.
+- Prioritize the visible row and neighbor; cancel queued rows of pages/sections left.
+- Bound speculative loading by source latency and light mode; defer during playback startup.
+- Supplement only focused metadata; preserve source posters/text and retain network/studio seeds without repeated row-wide cache lookups.
+- Guard trailer reveal by owner, title, generation and current video; keep artwork during renderer settle.
+- Existing animated banners, single clearlogo owner and user switches are retained.
+- AF3 keeps its own widget policy; pair native adaptive loading with skin.dexhub 3.17.0.
+

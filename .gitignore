@@ -1,0 +1,13 @@
+# Build output
+dist/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
