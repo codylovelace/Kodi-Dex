@@ -1,3 +1,6 @@
+5.10.143.1
+- Kodi-Dex build: published from the Kodi-Dex repository (repository.kodidex), github.com/codylovelace/Kodi-Dex. Code is unchanged from upstream 5.10.143.
+
 5.10.143
 - The "Colorful" badge style is called "Framed" (skin.dexhub 3.19.1 draws its own framed badges instead of the colorful flags).
 - Adding a source from a stremio:// link (the Install button on add-on pages) or a Stremio Web link (addon=...) works: the link becomes its https manifest URL before it is read or saved (dexhub/links.py), wherever a link is pasted: Add a source, the missing add-on prompt of collection imports, collection manifests, the AIOMetadata picker, Nuvio sync files, and the store itself. It failed with "unknown url type: stremio" (GitHub issue #1).

@@ -1,0 +1,40 @@
+# Checks every pull request and every push to a branch other than main
+# (main is checked and published by publish.yml).
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # check_versions.py compares against main
+
+      - name: Lint (Python 3.8 syntax, XML well-formed)
+        run: python3 scripts/lint.py
+
+      - name: Changed add-ons have a higher version
+        run: python3 scripts/check_versions.py "origin/${BASE_REF}"
+        env:
+          BASE_REF: ${{ github.base_ref || 'main' }}
+
+      - name: Build repository site
+        run: python3 scripts/build.py --site
+
+      - name: Verify site the way Kodi reads it
+        run: python3 scripts/verify_site.py dist/site
+
+      # Zips to try a change on a box (Install from zip file) before merging.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kodi-zips
+          path: dist/site/repo/zips/*/*.zip
+          retention-days: 14
