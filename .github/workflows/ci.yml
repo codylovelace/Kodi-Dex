@@ -21,6 +21,9 @@ jobs:
       - name: Lint (Python 3.8 syntax, XML well-formed)
         run: python3 scripts/lint.py
 
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -v
+
       - name: Changed add-ons have a higher version
         run: python3 scripts/check_versions.py "origin/${BASE_REF}"
         env:

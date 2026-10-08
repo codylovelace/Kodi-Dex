@@ -40,6 +40,8 @@ def _purge_http_cache():
       * addon_data/subtitle_cache/    → switched subtitle copies older than 7d
       * meta_cache.db expired rows
       * fanarttv_cache.db expired rows
+      * special://temp/dexhub_trick/ → seek previews unused for 24h, or
+        the oldest beyond 400 MB (Kodi-Dex)
     """
     import os as _os, time as _t
     try:
@@ -60,6 +62,15 @@ def _purge_http_cache():
                 xbmc.log('[DexHub] purged %d stale http-cache files' % removed, xbmc.LOGINFO)
     except Exception as exc:
         xbmc.log('[DexHub] http-cache purge failed: %s' % exc, xbmc.LOGWARNING)
+
+    # Kodi-Dex: seek preview copies (special://temp/dexhub_trick/)
+    try:
+        from resources.lib import seekthumbs
+        removed = seekthumbs.purge()
+        if removed:
+            xbmc.log('[DexHub] purged %d seek preview folders' % removed, xbmc.LOGINFO)
+    except Exception as exc:
+        xbmc.log('[DexHub] seek preview purge failed: %s' % exc, xbmc.LOGWARNING)
 
     # Subtitle files dir — wasn't being touched in earlier versions.
     try:
@@ -1036,6 +1047,16 @@ if __name__ == '__main__':
                 return None
             keys = set(old) | set(snap)
             return sorted(k for k in keys if old.get(k) != snap.get(k) and not _volatile_setting(k))
+
+        def onNotification(self, sender, method, data):
+            # Kodi-Dex: skin.dexhub's seek timer (Timers.xml) announces a seek
+            # with NotifyAll; everything else is ignored after one compare.
+            if sender == 'plugin.video.dexhub' and 'dexhub_seek_' in method:
+                try:
+                    from resources.lib import seekthumbs
+                    seekthumbs.on_notification(sender, method, data)
+                except Exception as exc:
+                    xbmc.log('[DexHub] seekthumb: notification failed: %s' % exc, xbmc.LOGWARNING)
 
         def onSettingsChanged(self):
             try:

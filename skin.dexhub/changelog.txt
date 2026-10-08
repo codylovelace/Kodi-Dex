@@ -1,3 +1,6 @@
+3.19.1.2
+- New: the seek bar shows Dex Hub's picture preview above the seek point (needs Dex Hub 5.10.143.3)
+
 3.19.1.1
 - Kodi-Dex build: published from the Kodi-Dex repository (repository.kodidex), github.com/codylovelace/Kodi-Dex. Unchanged from upstream 3.19.1.
 

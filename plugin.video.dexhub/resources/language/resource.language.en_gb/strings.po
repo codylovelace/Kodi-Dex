@@ -2042,3 +2042,23 @@ msgstr ""
 msgctxt "#31139"
 msgid "Strong"
 msgstr ""
+
+msgctxt "#31140"
+msgid "Seek previews"
+msgstr ""
+
+msgctxt "#31141"
+msgid "Show pictures while seeking (skin.dexhub)"
+msgstr ""
+
+msgctxt "#31142"
+msgid "Preview container for Stremio and debrid streams (http://host:port)"
+msgstr ""
+
+msgctxt "#31143"
+msgid "Preview container key"
+msgstr ""
+
+msgctxt "#31144"
+msgid "Pre-scan the stream every N seconds (0 = only on demand)"
+msgstr ""

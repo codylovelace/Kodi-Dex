@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import sys
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -865,6 +866,17 @@ def _is_internal_navigation_path(path):
     return any(marker in value for marker in markers)
 
 
+def _stop_seekthumbs():
+    """Kodi-Dex: ends the seek previews' threads; touches no window property."""
+    # not imported = never started: nothing to stop, nothing to load
+    module = sys.modules.get('%s.seekthumbs' % __package__)
+    if module is not None:
+        try:
+            module.stop()
+        except Exception:
+            pass
+
+
 class CompanionPlayer(xbmc.Player):
     def onAVStarted(self):
         # Warm the optional custom OSD from actual stream labels and local
@@ -878,6 +890,15 @@ class CompanionPlayer(xbmc.Player):
                 player_badges.publish()
         except Exception:
             pass
+        # Kodi-Dex: seek previews. start() only picks the source here; any
+        # network work waits in its own thread (seekthumbs.py). The same item
+        # again (onAVChange) is a no-op.
+        try:
+            if xbmc.getSkinDir() == 'skin.dexhub' and self.isPlayingVideo():
+                from . import seekthumbs
+                seekthumbs.start(self.ctx or load_session() or {}, self.getPlayingFile())
+        except Exception as exc:
+            xbmc.log('[DexHub] seekthumb: not started: %s' % exc, xbmc.LOGWARNING)
 
     def onAVChange(self):
         self.onAVStarted()
@@ -1946,6 +1967,7 @@ class CompanionPlayer(xbmc.Player):
 
     def onPlayBackStopped(self):
         _widgets_changed()
+        _stop_seekthumbs()
         self._stop_progress_heartbeat()
         self._resume_generation += 1
         self._resume_in_progress = False
@@ -2064,6 +2086,7 @@ class CompanionPlayer(xbmc.Player):
 
     def onPlayBackEnded(self):
         _widgets_changed()
+        _stop_seekthumbs()
         self._stop_progress_heartbeat()
         self._resume_generation += 1
         self._active_playback_uid = ''
