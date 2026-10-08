@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.kodidex" name="Kodi-Dex Repository" version="1.0.0" provider-name="codylovelace">
+    <requires>
+        <import addon="xbmc.addon" version="19.0.0" />
+    </requires>
+    <extension point="xbmc.addon.repository" name="Kodi-Dex Repository">
+        <dir>
+            <info>https://codylovelace.github.io/Kodi-Dex/repo/addons.xml</info>
+            <checksum verify="sha256">https://codylovelace.github.io/Kodi-Dex/repo/addons.xml.sha256</checksum>
+            <datadir>https://codylovelace.github.io/Kodi-Dex/repo/zips/</datadir>
+            <hashes>sha256</hashes>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">Dex Hub and the Dex Hub skin, built from github.com/codylovelace/Kodi-Dex</summary>
+        <description lang="en_GB">Installs and auto-updates the Kodi-Dex builds of Dex Hub (plugin.video.dexhub) and the Dex Hub skin (skin.dexhub). Every change merged into the main branch of github.com/codylovelace/Kodi-Dex is published here.</description>
+        <platform>all</platform>
+        <license>MIT</license>
+        <source>https://github.com/codylovelace/Kodi-Dex</source>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+    </extension>
+</addon>

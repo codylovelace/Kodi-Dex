@@ -1,3 +1,6 @@
+3.19.1.1
+- Kodi-Dex build: published from the Kodi-Dex repository (repository.kodidex), github.com/codylovelace/Kodi-Dex. Unchanged from upstream 3.19.1.
+
 3.19.1
 - The colourful badge images are gone: Arctic Fuse 3's colorful flags (media/af3/flags/colorful) and the badges trimmed from them (media/dexhub/badges) are replaced by Dex Hub's own framed white words, same names; the style is called Framed.
 - Installs in any order with Dex Hub: the import asks for any Dex Hub 5.10 (Kodi refused 3.19.0, which asked for 5.10.141, when its zip was installed first, and 3.18 stayed with its grey plates).
