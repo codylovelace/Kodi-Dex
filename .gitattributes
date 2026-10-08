@@ -1,0 +1,3 @@
+# Keep every file byte-identical to what Kodi receives (no CRLF conversion
+# on Windows checkouts), so rebuilt zips match the upstream releases.
+* -text
