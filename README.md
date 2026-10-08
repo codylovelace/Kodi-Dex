@@ -78,6 +78,25 @@ workflow cannot switch that on itself.
 4. Merge into `main`. **Publish Kodi repository** builds, verifies, deploys
    to Pages, then verifies the live site. Boxes update on their next check.
 
+## Measuring performance
+
+Speed work here is measured on the box, not guessed. To capture a log:
+
+1. On the box: **Settings → System → Logging → Enable debug logging** (on).
+2. Restart Kodi, wait for the Home, open the Home, scroll through the rows,
+   open a few grids, then go back to the Home once more.
+3. Copy `kodi.log` (CoreELEC: `/storage/.kodi/temp/kodi.log`, or the
+   `Logfiles` Samba share; Windows: `%APPDATA%\Kodi\kodi.log`).
+4. Turn debug logging off again (it slows Kodi down a little).
+5. `python3 scripts/analyze_log.py kodi.log`
+
+For each Dex Hub call it reports the **total** time (Kodi's own
+`CPythonInvoker` start/finish lines, which include starting a fresh
+Python), Dex Hub's **own** time (its `"<action> in N ms"` debug lines), and
+the **overhead** in between. It also shows how many calls ran at once, each
+Home opening as one burst, the slowest calls, thread waits, and the
+service's timings.
+
 ## Layout
 
 ```
@@ -95,6 +114,7 @@ scripts/
   check_versions.py    CI: changed add-on => higher version
   lint.py              CI: Python 3.8 syntax, XML well-formed
   verify_site.py       CI: read a built or live site the way Kodi does
+  analyze_log.py       where Dex Hub's time goes, from a Kodi debug log
   addons.py            shared helpers, incl. a port of Kodi's version ordering
 .github/workflows/
   ci.yml               pull requests and branches

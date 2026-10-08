@@ -176,7 +176,11 @@ def widget(action, params):
     every widget call gets its own, and neither happens (30 openings, no
     error). A widget call hardly gained from reuse anyway: the next widget's
     call starts while this one is still closing.
+
+    Kodi-Dex: the call's own time goes to the debug log in the same
+    "<action> in N ms" form as run() (scripts/analyze_log.py reads it).
     """
+    started = time.monotonic()
     try:
         if action == 'skin_row':
             row(params)
@@ -188,6 +192,10 @@ def widget(action, params):
         import traceback
         C.log('%s failed:\n%s' % (action, traceback.format_exc()), xbmc.LOGWARNING)
     _threads_left(action)
+    what = action
+    if action == 'skin_row':
+        what = 'skin_row %s/%s' % (params.get('m') or 'all', params.get('id') or '')
+    C.log('%s in %.0f ms' % (what, (time.monotonic() - started) * 1000), xbmc.LOGDEBUG)
     raise SystemExit
 
 
