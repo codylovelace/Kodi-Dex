@@ -1,3 +1,6 @@
+5.10.143.2
+- Debug log: Home row and search widget calls (skin.dexhub) log their own time, "skin_row <tab>/<row> in N ms", for scripts/analyze_log.py. Nothing is logged unless Kodi's debug logging is on.
+
 5.10.143.1
 - Kodi-Dex build: published from the Kodi-Dex repository (repository.kodidex), github.com/codylovelace/Kodi-Dex. Code is unchanged from upstream 5.10.143.
 
