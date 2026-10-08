@@ -15,4 +15,12 @@
         <reset>Player.Seeking | Player.Forwarding | Player.Rewinding | Player.HasPerformedSeek(1)</reset>
         <stop>Integer.IsGreaterOrEqual(Skin.TimerElapsedSecs(1109_topbaroverlay),5) | Player.Playing</stop>
     </timer>
+    <timer>
+        <name>dexhub_seekthumbs</name>
+        <description>Kodi-Dex seek previews: tells plugin.video.dexhub's service when a seek starts and ends (resources/lib/seekthumbs.py). Runs only while the playing item has previews.</description>
+        <start>Player.Seeking + String.IsEqual(Window(Home).Property(dexhub.seekthumb.ready),true)</start>
+        <stop>!Player.Seeking</stop>
+        <onstart>NotifyAll(plugin.video.dexhub,dexhub_seek_start)</onstart>
+        <onstop>NotifyAll(plugin.video.dexhub,dexhub_seek_stop)</onstop>
+    </timer>
 </timers>

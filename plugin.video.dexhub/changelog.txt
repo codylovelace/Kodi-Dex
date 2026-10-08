@@ -1,3 +1,6 @@
+5.10.143.3
+- New: picture previews while seeking in skin.dexhub, from Plex/Emby BIF files, Jellyfin trickplay tiles, or the optional ffmpeg container in docker/seekthumbs for Stremio and debrid streams (Settings > Playback > Seek previews)
+
 5.10.143.2
 - Debug log: Home row and search widget calls (skin.dexhub) log their own time, "skin_row <tab>/<row> in N ms", for scripts/analyze_log.py. Nothing is logged unless Kodi's debug logging is on.
 

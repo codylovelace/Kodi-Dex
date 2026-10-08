@@ -1,0 +1,21 @@
+# Portainer: Stacks > Add stack > Repository (this repo, compose path
+# docker/seekthumbs/compose.yaml), or paste this file with "build" replaced
+# by an image you built yourself. Set DEXHUB_THUMBS_KEY in the stack's
+# environment variables; the same key goes into Dex Hub's settings.
+services:
+  seekthumbs:
+    build: .
+    container_name: dexhub-seekthumbs
+    restart: unless-stopped
+    ports:
+      - "8765:8765"
+    environment:
+      DEXHUB_THUMBS_KEY: ${DEXHUB_THUMBS_KEY:?set DEXHUB_THUMBS_KEY}
+      DEXHUB_THUMBS_JOBS: "2"
+      DEXHUB_THUMBS_CACHE_MB: "2048"
+      DEXHUB_THUMBS_CACHE_HOURS: "48"
+    volumes:
+      - seekthumbs-cache:/cache
+
+volumes:
+  seekthumbs-cache:

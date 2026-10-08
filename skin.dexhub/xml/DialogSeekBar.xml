@@ -173,6 +173,440 @@
 								</control>
 							</control>
 						</control>
+						<!-- Kodi-Dex: seek preview (plugin.video.dexhub resources/lib/seekthumbs.py). It sits
+						     over the seek nib: the bar runs from x 240 to 1680, and each slide below moves
+						     the picture 72 px (5 % of the bar) once Player.SeekBar passes its step. -->
+						<control type="group">
+							<left>48</left>
+							<bottom>214</bottom>
+							<width>384</width>
+							<height>288</height>
+							<visible>Player.Seeking + String.IsEqual(Window(Home).Property(dexhub.seekthumb.ready),true) + !String.IsEmpty(Window(Home).Property(dexhub.seekthumb))</visible>
+							<animation effect="fade" start="0" end="100" time="150">Visible</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,3)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,8)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,13)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,18)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,23)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,28)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,33)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,38)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,43)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,48)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,53)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,58)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,63)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,68)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,73)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,78)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,83)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,88)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,93)">Conditional</animation>
+							<animation effect="slide" end="72,0" time="80" condition="Integer.IsGreaterOrEqual(Player.SeekBar,98)">Conditional</animation>
+							<control type="image">
+								<bottom>0</bottom>
+								<height>216</height>
+								<aspectratio aligny="bottom">keep</aspectratio>
+								<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+								<visible>String.IsEqual(Window(Home).Property(dexhub.seekthumb.mode),frame)</visible>
+							</control>
+							<!-- Jellyfin tile sheet, frames 1.3:1: a one-item list clips the sheet to one frame -->
+							<control type="list">
+								<bottom>0</bottom>
+								<width>384</width>
+								<height>288</height>
+								<orientation>vertical</orientation>
+								<visible>String.IsEqual(Window(Home).Property(dexhub.seekthumb.mode),tile) + String.IsEqual(Window(Home).Property(dexhub.seekthumb.aspect),133)</visible>
+								<itemlayout width="384" height="288">
+									<control type="image">
+										<width>3840</width>
+										<height>2880</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-288" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-576" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-864" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-1152" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-1440" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1728" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-2016" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-2304" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-2592" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</itemlayout>
+								<focusedlayout width="384" height="288">
+									<control type="image">
+										<width>3840</width>
+										<height>2880</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-288" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-576" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-864" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-1152" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-1440" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1728" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-2016" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-2304" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-2592" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</focusedlayout>
+								<content>
+									<item>
+										<label>-</label>
+										<onclick>noop</onclick>
+									</item>
+								</content>
+							</control>
+							<!-- Jellyfin tile sheet, frames 1.8:1: a one-item list clips the sheet to one frame -->
+							<control type="list">
+								<bottom>0</bottom>
+								<width>384</width>
+								<height>216</height>
+								<orientation>vertical</orientation>
+								<visible>String.IsEqual(Window(Home).Property(dexhub.seekthumb.mode),tile) + String.IsEqual(Window(Home).Property(dexhub.seekthumb.aspect),178)</visible>
+								<itemlayout width="384" height="216">
+									<control type="image">
+										<width>3840</width>
+										<height>2160</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-216" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-432" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-648" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-864" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-1080" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1296" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1512" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1728" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1944" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</itemlayout>
+								<focusedlayout width="384" height="216">
+									<control type="image">
+										<width>3840</width>
+										<height>2160</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-216" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-432" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-648" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-864" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-1080" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1296" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1512" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1728" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1944" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</focusedlayout>
+								<content>
+									<item>
+										<label>-</label>
+										<onclick>noop</onclick>
+									</item>
+								</content>
+							</control>
+							<!-- Jellyfin tile sheet, frames 1.9:1: a one-item list clips the sheet to one frame -->
+							<control type="list">
+								<bottom>0</bottom>
+								<width>384</width>
+								<height>207.6</height>
+								<orientation>vertical</orientation>
+								<visible>String.IsEqual(Window(Home).Property(dexhub.seekthumb.mode),tile) + String.IsEqual(Window(Home).Property(dexhub.seekthumb.aspect),185)</visible>
+								<itemlayout width="384" height="207.6">
+									<control type="image">
+										<width>3840</width>
+										<height>2076</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-207.6" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-415.2" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-622.8" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-830.4" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-1038" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1245.6" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1453.2" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1660.8" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1868.4" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</itemlayout>
+								<focusedlayout width="384" height="207.6">
+									<control type="image">
+										<width>3840</width>
+										<height>2076</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-207.6" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-415.2" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-622.8" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-830.4" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-1038" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1245.6" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1453.2" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1660.8" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1868.4" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</focusedlayout>
+								<content>
+									<item>
+										<label>-</label>
+										<onclick>noop</onclick>
+									</item>
+								</content>
+							</control>
+							<!-- Jellyfin tile sheet, frames 2:1: a one-item list clips the sheet to one frame -->
+							<control type="list">
+								<bottom>0</bottom>
+								<width>384</width>
+								<height>192</height>
+								<orientation>vertical</orientation>
+								<visible>String.IsEqual(Window(Home).Property(dexhub.seekthumb.mode),tile) + String.IsEqual(Window(Home).Property(dexhub.seekthumb.aspect),200)</visible>
+								<itemlayout width="384" height="192">
+									<control type="image">
+										<width>3840</width>
+										<height>1920</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-192" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-384" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-576" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-768" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-960" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1152" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1344" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1536" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1728" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</itemlayout>
+								<focusedlayout width="384" height="192">
+									<control type="image">
+										<width>3840</width>
+										<height>1920</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-192" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-384" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-576" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-768" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-960" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1152" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1344" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1536" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1728" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</focusedlayout>
+								<content>
+									<item>
+										<label>-</label>
+										<onclick>noop</onclick>
+									</item>
+								</content>
+							</control>
+							<!-- Jellyfin tile sheet, frames 2.2:1: a one-item list clips the sheet to one frame -->
+							<control type="list">
+								<bottom>0</bottom>
+								<width>384</width>
+								<height>174.5</height>
+								<orientation>vertical</orientation>
+								<visible>String.IsEqual(Window(Home).Property(dexhub.seekthumb.mode),tile) + String.IsEqual(Window(Home).Property(dexhub.seekthumb.aspect),220)</visible>
+								<itemlayout width="384" height="174.5">
+									<control type="image">
+										<width>3840</width>
+										<height>1745</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-174.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-349" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-523.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-698" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-872.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1047" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1221.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1396" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1570.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</itemlayout>
+								<focusedlayout width="384" height="174.5">
+									<control type="image">
+										<width>3840</width>
+										<height>1745</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-174.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-349" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-523.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-698" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-872.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-1047" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1221.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1396" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1570.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</focusedlayout>
+								<content>
+									<item>
+										<label>-</label>
+										<onclick>noop</onclick>
+									</item>
+								</content>
+							</control>
+							<!-- Jellyfin tile sheet, frames 2.4:1: a one-item list clips the sheet to one frame -->
+							<control type="list">
+								<bottom>0</bottom>
+								<width>384</width>
+								<height>160.7</height>
+								<orientation>vertical</orientation>
+								<visible>String.IsEqual(Window(Home).Property(dexhub.seekthumb.mode),tile) + String.IsEqual(Window(Home).Property(dexhub.seekthumb.aspect),239)</visible>
+								<itemlayout width="384" height="160.7">
+									<control type="image">
+										<width>3840</width>
+										<height>1607</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-160.7" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-321.4" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-482.1" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-642.8" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-803.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-964.2" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1124.9" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1285.6" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1446.3" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</itemlayout>
+								<focusedlayout width="384" height="160.7">
+									<control type="image">
+										<width>3840</width>
+										<height>1607</height>
+										<aspectratio>stretch</aspectratio>
+										<texture background="true">$INFO[Window(Home).Property(dexhub.seekthumb)]</texture>
+										<animation effect="slide" end="-384,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),1)">Conditional</animation>
+										<animation effect="slide" end="-768,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),2)">Conditional</animation>
+										<animation effect="slide" end="-1152,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),3)">Conditional</animation>
+										<animation effect="slide" end="-1536,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),4)">Conditional</animation>
+										<animation effect="slide" end="-1920,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),5)">Conditional</animation>
+										<animation effect="slide" end="-2304,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),6)">Conditional</animation>
+										<animation effect="slide" end="-2688,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),7)">Conditional</animation>
+										<animation effect="slide" end="-3072,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),8)">Conditional</animation>
+										<animation effect="slide" end="-3456,0" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.col),9)">Conditional</animation>
+										<animation effect="slide" end="0,-160.7" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),1)">Conditional</animation>
+										<animation effect="slide" end="0,-321.4" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),2)">Conditional</animation>
+										<animation effect="slide" end="0,-482.1" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),3)">Conditional</animation>
+										<animation effect="slide" end="0,-642.8" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),4)">Conditional</animation>
+										<animation effect="slide" end="0,-803.5" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),5)">Conditional</animation>
+										<animation effect="slide" end="0,-964.2" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),6)">Conditional</animation>
+										<animation effect="slide" end="0,-1124.9" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),7)">Conditional</animation>
+										<animation effect="slide" end="0,-1285.6" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),8)">Conditional</animation>
+										<animation effect="slide" end="0,-1446.3" time="0" condition="String.IsEqual(Window(Home).Property(dexhub.seekthumb.row),9)">Conditional</animation>
+									</control>
+								</focusedlayout>
+								<content>
+									<item>
+										<label>-</label>
+										<onclick>noop</onclick>
+									</item>
+								</content>
+							</control>
+						</control>
 						<control type="group">
 							<animation effect="fade" time="200" start="100" end="0" condition="Window.IsActive(1140) | Window.IsActive(1141) | Window.IsActive(1142) | Window.IsActive(videobookmarks) | Window.IsActive(pvrosdguide) | Window.IsActive(pvrosdchannels) | Window.IsActive(script-upnext-stillwatching.xml) | Window.IsActive(script-upnext-upnext.xml)" reversible="false">Conditional</animation>
 							<animation effect="fade" time="200" delay="200" end="100" start="0" condition="![Window.IsActive(1140) | Window.IsActive(1141) | Window.IsActive(1142) | Window.IsActive(videobookmarks) | Window.IsActive(pvrosdguide) | Window.IsActive(pvrosdchannels) | Window.IsActive(script-upnext-stillwatching.xml) | Window.IsActive(script-upnext-upnext.xml)]" reversible="false">Conditional</animation>

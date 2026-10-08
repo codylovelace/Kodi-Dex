@@ -2042,3 +2042,23 @@ msgstr "بدون"
 msgctxt "#31139"
 msgid "Strong"
 msgstr "قوي"
+
+msgctxt "#31140"
+msgid "Seek previews"
+msgstr "معاينة التقديم"
+
+msgctxt "#31141"
+msgid "Show pictures while seeking (skin.dexhub)"
+msgstr "عرض صور أثناء التقديم (سكين Dex Hub)"
+
+msgctxt "#31142"
+msgid "Preview container for Stremio and debrid streams (http://host:port)"
+msgstr "حاوية المعاينة لروابط Stremio وdebrid (http://host:port)"
+
+msgctxt "#31143"
+msgid "Preview container key"
+msgstr "مفتاح حاوية المعاينة"
+
+msgctxt "#31144"
+msgid "Pre-scan the stream every N seconds (0 = only on demand)"
+msgstr "مسح الرابط مسبقًا كل N ثانية (0 = عند الطلب فقط)"

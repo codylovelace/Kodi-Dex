@@ -133,6 +133,11 @@
 		<setting id="player_show_ratings" label="31124" default="true" type="bool" />
 		<setting id="player_show_studio" label="31125" default="true" type="bool" />
 		<setting id="metadata_badges" label="31126" default="true" type="bool" />
+		<setting type="lsep" label="31140" />
+		<setting id="seekthumb_enabled" type="bool" label="31141" default="true" />
+		<setting id="seekthumb_sidecar_url" type="text" label="31142" default="" enable="eq(-1,true)" />
+		<setting id="seekthumb_sidecar_token" type="text" label="31143" default="" option="hidden" enable="eq(-2,true)" />
+		<setting id="seekthumb_sidecar_scan" type="slider" label="31144" default="30" range="0,10,60" option="int" enable="eq(-3,true)" />
 	</category>
 	<category label="30933">
 		<setting type="action" label="30949" action="RunPlugin(plugin://plugin.video.dexhub/?action=simple_open_page&amp;target=nuvio_sync_menu)" />
